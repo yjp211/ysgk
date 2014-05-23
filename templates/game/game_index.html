@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block sub_title %}
+    {% trans "Game Manage" %}
+{% endblock %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="/static/schema/default/css/game/game.css">
+{% endblock %}
+
+{% block extra_script %}
+    <script src="/static/js/game/game.js"></script>
+{% endblock %}
+
+{% block main %}
+    Hello GameManage
+    <div id="tree">
+    呜呜呜
+    </div>
+{% endblock %}

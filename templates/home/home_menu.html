@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<div class="menu">
+    <div class="logo">
+        {% trans "Product Name" %}
+    </div>
+    <div class="login-info">
+        Admin {% trans "Sign In" %} |
+        <a href="{% url 'login_out' %}">{% trans "Sign Out" %}</a>
+    </div>
+    <div class="top-nav">
+        <ul>
+           <li>
+               <a href="{% url 'game_index' %}" class="menu-link">{% trans "Game Manage" %}</a>
+           </li>
+        </ul>
+    </div>
+</div>

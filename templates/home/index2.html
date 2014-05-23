@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block sub_title %}
+    {% trans "Home" %}
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="/static/schema/default/css/home/home.css">
+{% endblock %}
+
+{% block extra_script %}
+    <script src="/static/js/home/home.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="header">
+        {% include 'home/home_menu.html' %}
+    </div>
+    <div class="content">
+        <iframe src="{% url 'game_index' %}" data-url="{% url 'game_index' %}" class="frame-display" frameborder="0"></iframe>
+    </div>
+{% endblock %}
