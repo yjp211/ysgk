@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block sub_title %}
+    {% trans "Game Manage" %}
+{% endblock %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="/static/schema/default/css/game/game.css">
+{% endblock %}
+
+{% block extra_script %}
+    <script src="/static/js/game/game.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>游戏</th>
+                    <th>上传时间</th>
+                    <th>图标</th>
+                    <th>描述</th>
+                    <th>标签</th>
+                    <th>游戏图片</th>
+                    <th>apk地址</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for game in game_list %}
+                <tr>
+                    <td>{{ game.name_ch }}</td>
+                    <td>{{ game.create_time }}</td>
+                    <td>{{ game.icon.name }}</td>
+                    <td>{{ game.desc_ch }}</td>
+                    <td>
+                        {% for tag in game.tags.all %}
+                            {{ tag.name_ch }} -
+                        {% endfor %}
+                    </td>
+                    <td>{{ game.screens.all }}</td>
+                    <td>{{ game.apk_url }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+{% endblock %}

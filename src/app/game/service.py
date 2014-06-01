@@ -12,9 +12,9 @@ class Service(BaseService):
 
 
 
-    def all_user(self):
+    def add_game(self):
         """
-        获取所有用户
+       添加游戏
         """
         ret = Result()
         return ret

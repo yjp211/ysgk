@@ -28,7 +28,7 @@ DATABASES = {
         'NAME': 'ysgk',
         'USER': 'root',
         'PASSWORD': 'qwer1234',
-        'HOST': '192.168.0.107',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -108,7 +108,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'src.app.game',
+    'src',
 )
 
 LOG_ROOT = os.path.join(PROJECT_ROOT, 'log')

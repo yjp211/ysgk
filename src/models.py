@@ -3,18 +3,40 @@
 from django.db import models
 
 
-class Image(models.Model):
+FILED_NORMAL_MAX_LENGTH = 1024
+FIELD_NAME_MAX_LENGTH = 1024
+FIELD_URL_MAX_LENGTH = 2048
+
+
+class File(models.Model):
+    """
+    文件
+    """
+    create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
+
+    name = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)        # 文件名
+    mini_type = models.CharField(max_length=FILED_NORMAL_MAX_LENGTH, blank=True)
+    size = models.IntegerField()                                       # 文件大小
+    url = models.CharField(max_length=FIELD_URL_MAX_LENGTH)                      # 云端地址
+
+    class Meta:
+        db_table = 'file'
+
+
+class Image(File):
     """
     图片文件
     """
-    name = models.CharField(max_length=1024, blank=True)        # 文件名
-    size = models.IntegerField(blank=True)                      # 文件大小
     width = models.IntegerField(blank=True)                     # 图片宽度（px）
     height = models.IntegerField(blank=True)                    # 图片高度(px)
-    url = models.CharField(max_length=2048)                     # 云端地址
 
     class Meta:
         db_table = 'image'
+
+    class FileMeta:
+        exclude_fields = []
+        exclude_fields_append = ['id', 'lft', 'rght', 'tree_id', 'parent']
+
 
 
 class Tag(models.Model):
@@ -33,8 +55,8 @@ class Game(models.Model):
     游戏模型
     """
 
-    create_time = models.DateTimeField()            # 创建时间
-    update_time = models.DateTimeField()            # 最后更新时间
+    create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
+    update_time = models.DateTimeField(auto_now=True)            # 最后更新时间
 
     name = models.CharField(max_length=1024)        # 英文名称
     name_ch = models.CharField(max_length=1024)     # 中文名称

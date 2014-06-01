@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block sub_title %}
+    {% trans "Game Add" %}
+{% endblock %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="/static/schema/default/css/game/game.css">
+{% endblock %}
+
+{% block extra_script %}
+    <script src="/static/js/game/game.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <form class="form-horizontal game-form" action="{% url 'game_add' %}" id="game_form" method="POST">
+            {% csrf_token %}
+            <fieldset>
+                <div id="legend" class="">
+                    <legend class="">添加游戏</legend>
+                </div>
+                <div class="form-group">
+
+                    <!-- Text input-->
+                    <label class="col-sm-3 control-label" for="input01">中文名</label>
+
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="name_ch">
+
+                        <p class="help-block">游戏名称</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <!-- Text input-->
+                    <label class="col-sm-3 control-label" for="input01">英文名</label>
+
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="name">
+
+                        <p class="help-block">游戏英文名称</p>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+
+                    <!-- Textarea -->
+                    <label class="col-sm-3 control-label">游戏说明</label>
+
+                    <div class="col-sm-3">
+                        <div class="textarea">
+                            <textarea type="" class="form-control" name="desc_ch"> </textarea>
+
+                            <p class="help-block">对游戏进行简单描述</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+
+                    <!-- Textarea -->
+                    <label class="col-sm-3 control-label">英文说明</label>
+
+                    <div class="col-sm-3">
+                        <div class="textarea">
+                            <textarea type="" class="form-control"  name="desc"> </textarea>
+
+                            <p class="help-block">英文描述</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">类型</label>
+
+                    <!-- Multiple Checkboxes -->
+                    <div class="col-sm-8">
+                        {% for tag in tag_list %}
+                            <!-- Inline Checkboxes -->
+                            <label class="checkbox-inline col-sm-3">
+                                <input type="checkbox" name="tags" value="{{ tag.id }}">
+                                {{ tag.name_ch }}({{ tag.name }})
+                            </label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">图标</label>
+
+                    <div class="col-sm-4">
+                        <div class="upload-wrap" max-upload="1" is-image="true" file-name="icon">
+                            <div class="wrap">
+                                <button type="button" class="btn btn-primary btn-sm" id="upload_icon">选择图标</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">截图</label>
+
+                    <div class="col-sm-8">
+                        <div class="upload-wrap" max-upload="3" is-image="true" file-name="screens">
+                            <div class="wrap">
+                                <button type="button" class="btn btn-primary btn-sm" id="upload_screen">选择截图</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">推荐图片</label>
+
+                    <div class="col-sm-8">
+                        <div class="upload-wrap" max-upload="1" is-image="true" file-name="rec_screen">
+                            <div class="wrap">
+                                <button type="button" class="btn btn-primary btn-sm" id="upload_screen">选择截图</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Flash文件</label>
+
+                    <div class="col-sm-4">
+                        <div class="upload-wrap" max-upload="1" is-image="false" file-name="flash">
+                            <div class="wrap">
+                                <button type="button" class="btn btn-primary btn-sm" id="upload_flash">选择Flash</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">安卓安装包</label>
+
+                    <div class="col-sm-4">
+                        <div class="upload-wrap" max-upload="1" is-image="false" file-name="apk">
+                            <div class="wrap">
+                                <button type="button" class="btn btn-primary btn-sm" id="upload_apk">选择Apk</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">苹果安装包</label>
+
+                    <div class="col-sm-4">
+                        <div class="upload-wrap" max-upload="1" is-image="false" file-name="ipa">
+                            <div class="wrap">
+                                <button type="button" class="btn btn-primary btn-sm" id="upload_apk">选择Ipa</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <hr>
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="button" class="btn btn-success btn-lg" id="subBtn">上 传</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}
