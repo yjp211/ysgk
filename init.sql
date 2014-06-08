@@ -1,6 +1,7 @@
 
 CREATE DATABASE ysgk;
 USE ysgk;
+
 CREATE TABLE `file` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `create_time` datetime NOT NULL,
@@ -23,22 +24,22 @@ CREATE TABLE `tag` (
     `name_ch` varchar(1024) NOT NULL
 )
 ;
+CREATE TABLE `game_tags` (
+    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `game_id` integer NOT NULL,
+    `tag_id` integer NOT NULL,
+    UNIQUE (`game_id`, `tag_id`)
+)
+;
+ALTER TABLE `game_tags` ADD CONSTRAINT `tag_id_refs_id_8f55a277` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`);
 CREATE TABLE `game_screens` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `game_id` integer NOT NULL,
-    `image_id` integer NOT NULL,
-    UNIQUE (`game_id`, `image_id`)
+    `file_id` integer NOT NULL,
+    UNIQUE (`game_id`, `file_id`)
 )
 ;
-ALTER TABLE `game_screens` ADD CONSTRAINT `image_id_refs_file_ptr_id_6bf1c595` FOREIGN KEY (`image_id`) REFERENCES `image` (`file_ptr_id`);
-CREATE TABLE `game_rec_screens` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `game_id` integer NOT NULL,
-    `image_id` integer NOT NULL,
-    UNIQUE (`game_id`, `image_id`)
-)
-;
-ALTER TABLE `game_rec_screens` ADD CONSTRAINT `image_id_refs_file_ptr_id_71b6857d` FOREIGN KEY (`image_id`) REFERENCES `image` (`file_ptr_id`);
+ALTER TABLE `game_screens` ADD CONSTRAINT `file_id_refs_id_e3848933` FOREIGN KEY (`file_id`) REFERENCES `file` (`id`);
 CREATE TABLE `game` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `create_time` datetime NOT NULL,
@@ -48,25 +49,24 @@ CREATE TABLE `game` (
     `desc` longtext NOT NULL,
     `desc_ch` longtext NOT NULL,
     `icon_id` integer NOT NULL,
-    `flash_url` varchar(2048) NOT NULL,
-    `ipa_url` varchar(2048) NOT NULL,
-    `apk_url` varchar(2048) NOT NULL
+    `rec_screen_id` integer NOT NULL,
+    `flash_id` integer NOT NULL,
+    `ipa_id` integer NOT NULL,
+    `apk_id` integer NOT NULL
 )
 ;
-ALTER TABLE `game` ADD CONSTRAINT `icon_id_refs_file_ptr_id_b002a7ad` FOREIGN KEY (`icon_id`) REFERENCES `image` (`file_ptr_id`);
+ALTER TABLE `game` ADD CONSTRAINT `icon_id_refs_id_2adc86ff` FOREIGN KEY (`icon_id`) REFERENCES `file` (`id`);
+ALTER TABLE `game` ADD CONSTRAINT `rec_screen_id_refs_id_2adc86ff` FOREIGN KEY (`rec_screen_id`) REFERENCES `file` (`id`);
+ALTER TABLE `game` ADD CONSTRAINT `flash_id_refs_id_2adc86ff` FOREIGN KEY (`flash_id`) REFERENCES `file` (`id`);
+ALTER TABLE `game` ADD CONSTRAINT `ipa_id_refs_id_2adc86ff` FOREIGN KEY (`ipa_id`) REFERENCES `file` (`id`);
+ALTER TABLE `game` ADD CONSTRAINT `apk_id_refs_id_2adc86ff` FOREIGN KEY (`apk_id`) REFERENCES `file` (`id`);
+ALTER TABLE `game_tags` ADD CONSTRAINT `game_id_refs_id_da4533b5` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`);
 ALTER TABLE `game_screens` ADD CONSTRAINT `game_id_refs_id_47c1073b` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`);
-ALTER TABLE `game_rec_screens` ADD CONSTRAINT `game_id_refs_id_2578428e` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`);
-CREATE TABLE `game_tag_maps` (
-    `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
-    `game_id` integer NOT NULL,
-    `tags_id` integer NOT NULL
-)
-;
-ALTER TABLE `game_tag_maps` ADD CONSTRAINT `tags_id_refs_id_3029c852` FOREIGN KEY (`tags_id`) REFERENCES `tag` (`id`);
-ALTER TABLE `game_tag_maps` ADD CONSTRAINT `game_id_refs_id_69e2c904` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`);
 CREATE INDEX `game_465cb59b` ON `game` (`icon_id`);
-CREATE INDEX `game_tag_maps_65e12249` ON `game_tag_maps` (`game_id`);
-CREATE INDEX `game_tag_maps_d03bd400` ON `game_tag_maps` (`tags_id`);
+CREATE INDEX `game_0229d4d2` ON `game` (`rec_screen_id`);
+CREATE INDEX `game_c74a3f57` ON `game` (`flash_id`);
+CREATE INDEX `game_f524f373` ON `game` (`ipa_id`);
+CREATE INDEX `game_660e1303` ON `game` (`apk_id`);
 
 INSERT INTO tag (name, name_ch) VALUES ('Management', '经营');
 INSERT INTO tag (name, name_ch) VALUES ('Strategy', '策略');

@@ -10,7 +10,7 @@ class Views(BaseView):
     主页试图类
     """
 
-    def index(self, request, template='home/index2.html'):
+    def index(self, request, template='home/index.html'):
         """
         主页
         """

@@ -15,6 +15,7 @@ urlpatterns = patterns('src.views',
 )
 
 urlpatterns += patterns('',
+    url(r'^misc/', include('src.app.misc.urls')),
     url(r'^home/', include('src.app.home.urls')),
     url(r'^auth/', include('src.app.auth.urls')),
     url(r'^game/', include('src.app.game.urls')),

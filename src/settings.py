@@ -22,6 +22,13 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #     }
 # }
 
+UPYUN = {
+    'BUCKETNAME': 'ykwsys',
+    'USERNAME': 'ykwsys',
+    'PASSWORD': 'ykw11233',
+    'TIMEOUT': 30,
+}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',

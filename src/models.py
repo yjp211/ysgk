@@ -64,28 +64,18 @@ class Game(models.Model):
     desc = models.TextField()                       # 描述（英文）
     desc_ch = models.TextField()                    # 描述（中文）
 
-    tags = models.ManyToManyField(Tag, through='GameTagMaps')
+    tags = models.ManyToManyField(Tag, related_name='game_tag_map')
 
     #所有图片单独存储在一个表中， 指定"related_name" ORM会而外的创建关系表
-    icon = models.ForeignKey(Image, related_name='icon_image')        # 图标
-    screens = models.ManyToManyField(Image, related_name='screen_images')   # 截图，多个
-    rec_screens = models.ManyToManyField(Image, related_name='recommand_screens')   # 推荐截图
+    icon = models.ForeignKey(File, related_name='game_icon_map')        # 图标
+    screens = models.ManyToManyField(File, related_name='game_screens_map')   # 截图，多个
+    rec_screen = models.ForeignKey(File, related_name='game_rec_screen_map')   # 推荐截图
 
     #flash, app, apk上传后，将其存储到云端，数据库中保留云端的下载路径
-    flash_url = models.CharField(max_length=2048)  # 原始flash文件（保存到云端，数据库存储云端的下载地址）
-    ipa_url = models.CharField(max_length=2048, blank=True)    # 上传的ios文件（保存到云端，数据库存储云端的下载地址）
-    apk_url = models.CharField(max_length=2048)    # 制作成的apk文件（保存到云端，数据库存储云端的下载地址）
+    flash = models.ForeignKey(File, related_name='game_flash_map')  # 原始flash文件（保存到云端，数据库存储云端的下载地址）
+    ipa = models.ForeignKey(File, related_name='game_ipa_map', blank=True)    # 上传的ios文件（保存到云端，数据库存储云端的下载地址）
+    apk = models.ForeignKey(File, related_name='game_apk_map')    # 制作成的apk文件（保存到云端，数据库存储云端的下载地址）
 
     class Meta:
         db_table = 'game'
 
-
-class GameTagMaps(models.Model):
-    """
-    游戏和标签的映射关系
-    """
-    game = models.ForeignKey(Game)
-    tags = models.ForeignKey(Tag)
-
-    class Meta:
-        db_table = 'game_tag_maps'

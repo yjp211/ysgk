@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import  json
 
 class Result(object):
     """
@@ -12,6 +13,9 @@ class Result(object):
         self.errno = ''      # error number
         self.exception = ''   # if have a exception, save it
         self.data = {}        # a dict contain value
+
+    def to_json(self):
+        return json.dumps(vars(self))
 
     def __unicode__(self):
         if self.success:

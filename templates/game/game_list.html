@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load custom_filter %}
 
 {% block sub_title %}
     {% trans "Game Manage" %}
@@ -7,45 +8,52 @@
 
 
 {% block extra_css %}
-    <link rel="stylesheet" href="/static/schema/default/css/game/game.css">
+    <link rel="stylesheet" href="/static/schema/default/css/game/game_list.css">
 {% endblock %}
 
 {% block extra_script %}
-    <script src="/static/js/game/game.js"></script>
+    <script src="/static/js/game/game_list.js"></script>
 {% endblock %}
 
 {% block main %}
     <div class="container">
-        <table class="table table-striped table-hover">
-            <thead>
-                <tr>
-                    <th>游戏</th>
-                    <th>上传时间</th>
-                    <th>图标</th>
-                    <th>描述</th>
-                    <th>标签</th>
-                    <th>游戏图片</th>
-                    <th>apk地址</th>
-                </tr>
-            </thead>
-            <tbody>
+        <div class="grid-wrap">
+            <div class="row grid-head">
+                 <div class="col-md-offset-10 col-md-2">
+                    <a href="{% url 'game_prepar_add' %}" class="btn btn-link">添加游戏</a>
+                </div>
+            </div>
+            <div class="grid-body">
                 {% for game in game_list %}
-                <tr>
-                    <td>{{ game.name_ch }}</td>
-                    <td>{{ game.create_time }}</td>
-                    <td>{{ game.icon.name }}</td>
-                    <td>{{ game.desc_ch }}</td>
-                    <td>
-                        {% for tag in game.tags.all %}
-                            {{ tag.name_ch }} -
-                        {% endfor %}
-                    </td>
-                    <td>{{ game.screens.all }}</td>
-                    <td>{{ game.apk_url }}</td>
-                </tr>
+                    <div class="row grid-item">
+                        <div class="game-info col-md-2">
+                            <div class="game-title"
+                                 title="{{ game.name_ch }}">{{ game.name_ch  | cut_string:"10" }}</div>
+                            <div class="game-icon">
+                                <img src="{{ game.icon.url }}"
+                                     alt="{{ game.name_ch }}">
+                            </div>
+                            <div class="game-time">{{ game.create_time | pretty_datetime }}</div>
+                        </div>
+                        <div class="game-tail col-md-2">
+                            <div class="game-tags">
+                                {% for tag in game.tags.all %}
+                                    <span class="game-tag">{{ tag.name_ch }} </span>
+                                {% endfor %}
+                            </div>
+                            <div class="game-desc" title="{{ game.desc_ch }}">{{ game.desc_ch | cut_string:"40" }}</div>
+                        </div>
+                        <div class="game-screens col-md-8">
+                            <div class="screen-wrap" style="width: {{ game.screens.count | algorithm:"(%s+1)*120+20" }}px;">
+                                <img src="{{ game.rec_screen.url }}">
+                                {% for screen in game.screens.all %}
+                                <img src="{{ screen.url }}">
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
-            </tbody>
-        </table>
-
+            </div>
+        </div>
     </div>
 {% endblock %}

@@ -46,3 +46,70 @@ $.ajaxSetup({
         }
     }
 });
+
+
+function debug(msg){
+    console.log(msg);
+}
+
+function messagebox(msg){
+    debug(msg);
+    alert(msg);
+}
+
+/**
+ * 判断字符是否在一个以split作为分隔的字符串中
+ * @param item： 要查找的项
+ * @param org： 原始字串
+ * @param split: 分隔方式，默认以逗号分隔
+ */
+function itemExistInStr(item, org){
+    var split = arguments[2] ? arguments[2] : ',';
+    var item = '' + item;
+    return $.inArray(item, org.split(split)) >= 0;
+}
+
+/**
+ * 将字符串添加到另一个字符串中，并且以split作为分隔
+ * 'abc'添加到 'str1,str2,str3' ---> 'str1,str2,str3,abc'
+ * @param item： 要添加的项
+ * @param org： 原始字串
+ * @param split: 分隔方式，默认以逗号分隔
+ */
+function strListAddItem(item, org){
+    var split = arguments[2] ? arguments[2] : ',';
+    var item = '' + item;
+    if(itemExistInStr(item, org, split)){
+        return true;
+    }
+    if(org.length == 0){
+        return item;
+    }
+    return '' + org + split + item;
+}
+
+/**
+ * 在一个以split分隔的字符串中删除一个指定的序列
+ * @param item： 要添加的项
+ * @param org：原始字符串
+ * @param split：分隔符，默认为逗号
+ */
+function strListReItem(item, org){
+    var split = arguments[2] ? arguments[2] : ',';
+    var item = '' + item;
+    var arr = org.split(split);
+    var index = $.inArray(item, arr);
+    if(index < 0){
+        return org;
+    }
+    arr.splice(index, 1);
+    var newStr = "";
+    for(var i=0; i < arr.length; i++){
+        if(i == 0){
+            newStr = arr[i];
+        }else{
+            newStr += split + arr[i];
+        }
+    }
+    return newStr;
+}

@@ -1,13 +1,12 @@
 # -*- coding:utf-8 -*-
-import json
+from django.shortcuts import render, HttpResponse
 
-from django.shortcuts import render, redirect, HttpResponse
-from misc.base.view import require_post
+from src.models import Tag, Game
 
+from src.misc.base.view import require_post
 from src.misc.base.view import BaseView
-from src.app.game.service import game_service
 
-from src.models import Tag, Game, File
+from src.app.game.service import game_service
 
 __all__ = ['game_views']
 
@@ -32,24 +31,7 @@ class Views(BaseView):
         return render(request, template, locals())
 
     @require_post
-    def upload_file(self, request):
-        """
-        上传文件
-        """
-        request.FILES
-        psot_file = request.FILES.get('file')
-
-        file = File()
-        file.name = psot_file.name
-        file.size = psot_file.size
-        file.url = 'aaaaa'
-        print file.save()
-        print file.id
-
-        return HttpResponse(json.dumps(file.id))
-
-    @require_post
-    def add(self, request, template='game/game_add.html'):
+    def add(self, request):
         """
         添加游戏
         """
@@ -59,9 +41,15 @@ class Views(BaseView):
 
         game.desc = request.POST.get('desc')                        # 描述（英文）
         game.desc_ch = request.POST.get('desc_ch')                     # 描述（中文）
-
-
-        return redirect('/game/prepar_add')
+        game.tag_ids = request.POST.get('tags')          # 标签_ids
+        game.icon_id = int(request.POST.get('icon'))          # 图标文件_id
+        game.screen_ids = request.POST.get('screens')          # 截图文件_ids
+        game.rec_screen_id = request.POST.get('rec_screen')          # 推荐图片_id
+        game.flash_id = request.POST.get('flash')          # flash文件_id
+        game.apk_id = request.POST.get('apk')          # apk文件_id
+        game.ipa_id = request.POST.get('ipa')          # ipa文件_id
+        ret =  game_service.add_game(game)
+        return HttpResponse(ret.to_json())
 
     def list(self, request, template='game/game_list.html'):
         """
@@ -69,8 +57,6 @@ class Views(BaseView):
         """
         game_list = Game.objects.all()
         return render(request, template, locals())
-
-
 
 
 game_views = Views()

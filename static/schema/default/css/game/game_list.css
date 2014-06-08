@@ -1,0 +1,69 @@
+.grid-item {
+    margin: 10px 0 0 0;
+    height: 200px;
+    background-color: #ffffff;
+}
+
+
+.game-info,
+.game-tail,
+.game-screens {
+    padding-top: 5px;
+    height: 100%;
+}
+
+.game-info {
+    padding-left: 25px;
+}
+
+.game-info .game-title {
+    margin-bottom: 10px;
+    font-size: 1.7em;
+    font-weight: bold;
+}
+
+.game-info .game-icon {
+    margin-bottom: 15px;
+}
+
+.game-icon img {
+    width: 90px;
+    height: 90px;
+}
+
+
+.game-info .game-time {
+    margin-bottom: 5px;
+}
+
+.game-tail .game-tags {
+    margin-bottom: 10px;
+}
+
+.game-tags .game-tag {
+    display: inline-block;
+    margin: 2px 5px;
+    padding: 2px 5px;
+    background-color: rgb(235, 235, 235);
+    text-align: center;
+}
+
+.game-screens {
+    padding-top: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.game-screens img {
+    width: 120px;
+    height: 160px;
+}
+
+.screen-wrap {
+    height: 100%;
+}
+
+.screen-wrap img{
+    display: inline-block;
+}
+

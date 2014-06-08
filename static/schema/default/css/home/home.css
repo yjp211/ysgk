@@ -9,8 +9,7 @@ iframe {
     padding: 10px;
     border: 0;
     border-style: hidden;
-
-    background: #FFF;
+    background-color: #f4f4f4;
 }
 
 /** layout */
