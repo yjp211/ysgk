@@ -5,26 +5,7 @@ $(function () {
      * 在wrap前插入一个holder，并触发hodler file元素点击事件
      */
     $(document).on('click', '.upload-wrap .wrap :button', function () {
-        var upload_warp = $(this).parent('.wrap').parent('.upload-wrap');
-        var max_upload = parseInt(upload_warp.attr('max-upload'));
-        var cur_node = upload_warp.children('.holder').length;
-        var html = '<div class="holder hidden">'
-            + '<input type="file" class="hidden">'
-            + '<div class="preview"></div>'
-            + '<span class="glyphicon glyphicon-remove remove" title="移除"></span>'
-            + '<div class="progress  progress-striped active">'
-            + '<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">'
-            + '</div>'
-            + '</div>'
-            + '</div>';
-
-        $(this).parent('.wrap').before(html);
-        var file = $(this).parent('.wrap').prev('.holder').children(':input[type=file]').click();
-
-        //上传图片的个数已经达到数目，隐藏上传按钮。
-        if (cur_node + 1 >= max_upload) {
-            upload_warp.children('.wrap').hide();
-        }
+        $(this).prev(':file').click();
     });
 
 
@@ -34,18 +15,37 @@ $(function () {
      * is-image：上传的是否是图片，是：图片预览，否：显示文件的基本信息
      * 在预览文件完成后开始ajax上传文件，上传文件后将后台返回的文件ID保存到文件"for"属性指代的hidden元素中
      */
-    $(document).on('change', '.upload-wrap .holder :input[type=file]', function () {
+    $(document).on('change', '.upload-wrap .wrap :file', function () {
         //获取到最顶层的upload-wrap
         //upload-wrap有两个属性参数
-        var upload_warp = $(this).parent('.holder').parent('.upload-wrap');
+        var upload_warp = $(this).parent('.wrap').parent('.upload-wrap');
+        var max_upload = parseInt(upload_warp.attr('max-upload'));
+        var cur_node = upload_warp.children('.holder').length;
+
+        //上传图片的个数已经达到数目，隐藏上传按钮。
+        if (cur_node + 1 >= max_upload) {
+            upload_warp.children('.wrap').hide();
+        }
+
         var is_image = upload_warp.attr('is-image') == "true";
         var upload_for = upload_warp.attr('for');
         var for_obj = upload_warp.prev(":input[name='" + upload_for + "']");
-        var holder = $(this).parent('.holder');
+        var html = '<div class="holder hidden">'
+            + '<div class="preview"></div>'
+            + '<span class="glyphicon glyphicon-remove remove" title="移除"></span>'
+            + '<div class="progress  progress-striped active">'
+            + '<div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">'
+            + '</div>'
+            + '</div>'
+            + '</div>';
+
+        $(this).parent('.wrap').before(html);
+
+
+        var holder = $(this).parent('.wrap').prev('.holder');
         var preview = holder.children('.preview');
-        var progress_obj = $(this).nextAll('.progress').children('.progress-bar');
+        var progress_obj = holder.children('.progress').children('.progress-bar');
         var file = this.files[0];
-        var file_obj = this;
 
         if (is_image) {
             var reader = new FileReader();
@@ -54,28 +54,29 @@ $(function () {
                 image.src = event.target.result;
                 preview.append(image);
                 holder.removeClass('hidden');
-                uploadFile(file_obj, progress_obj, for_obj);
+                uploadFile(file, progress_obj, for_obj, preview);
             };
             reader.readAsDataURL(file);
         } else {
             preview.append('<p>' + file.name + ' :: ' + (file.size ? (file.size / 1024 | 0) + 'K' : ''));
             holder.removeClass('hidden');
-            uploadFile(file_obj, progress_obj, for_obj);
+            uploadFile(file, progress_obj, for_obj, preview);
         }
-
+        $(this).val('');
     });
 
 
     /**
      * 上传文件
      * 不会有多个文件同时上传的情况
-     * @param file_obj， file元素
+     * @param file， file文件
      * @param progress， 进度条
      * @param for_obj, 上传成功后文件ID保存的目标元素
+     * @param preview, 标记预览的元素是否上传
      */
-    function uploadFile(file_obj, progress, for_obj) {
-        var file = file_obj.files[0];
+    function uploadFile(file, progress, for_obj, preview) {
         var formData = new FormData();
+        formData.append('use_on', for_obj.attr('name'));
         formData.append('file', file);
         progress.css('width', '40%');
 
@@ -101,7 +102,7 @@ $(function () {
                     progress.addClass('progress-bar-success');
                     progress.parent().hide(); //上传完成后隐藏进度条
                     var file_id = ret['data']['file_id'];
-                    $(file_obj).data('file_id', file_id);
+                    preview.data('file_id', file_id);
                     var cur_val = for_obj.val();
                     for_obj.val(strListAddItem(file_id, cur_val));
                 } else {
@@ -136,8 +137,8 @@ $(function () {
      */
     $(document).on('click', '.upload-wrap .holder span.remove', function () {
         var _this = this;
-        var file_obj = $(this).prevAll(':file');
-        var file_id = file_obj.data('file_id');
+        var preview = $(this).prevAll('.preview');
+        var file_id = preview.data('file_id');
 
         //上传成功删除远程文件
         if(typeof(file_id) != "undefined" ){

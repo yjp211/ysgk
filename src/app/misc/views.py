@@ -27,6 +27,7 @@ class Views(BaseView):
         post_file = request.FILES.get('file')
         upload_file = File()
         upload_file.name = post_file.name
+        upload_file.use_on = request.POST.get('use_on')
         upload_file.size = post_file.size
         upload_file.body = post_file
         ret = misc_service.upload_file(upload_file)

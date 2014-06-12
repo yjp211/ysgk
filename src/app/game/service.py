@@ -20,7 +20,7 @@ class Service(BaseService):
             map(game.tags.add, [item.strip() for item in game.tag_ids.split(',') if item.strip()])
             map(game.screens.add, [item.strip() for item in game.screen_ids.split(',') if item.strip()])
         except Exception, e:
-            log_debug(u"添加游戏<%s>，数据库操作失败，%s" % (game.name_ch, e))
+            log_debug.error(u"添加游戏<%s>，数据库操作失败，%s" % (game.name_ch, e))
             ret.success = False
             ret.msg = u"数据库操作失败"
         return ret

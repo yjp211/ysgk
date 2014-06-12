@@ -6,6 +6,7 @@ from django.db import models
 FILED_NORMAL_MAX_LENGTH = 1024
 FIELD_NAME_MAX_LENGTH = 1024
 FIELD_URL_MAX_LENGTH = 2048
+FILE_USE_ON = ['icon', 'screens', 'rec_screen','flash', 'apk', 'ipa', 'apk_pack']
 
 
 class File(models.Model):
@@ -15,28 +16,15 @@ class File(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
 
     name = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)        # 文件名
-    mini_type = models.CharField(max_length=FILED_NORMAL_MAX_LENGTH, blank=True)
+    use_on = models.CharField(max_length=FIELD_NAME_MAX_LENGTH, blank=True)
+    mini_type = models.CharField(max_length=FIELD_NAME_MAX_LENGTH, blank=True)
+    width = models.IntegerField(blank=True, null=True)                     # 图片宽度（px）
+    height = models.IntegerField(blank=True, null=True)                    # 图片高度(px)
     size = models.IntegerField()                                       # 文件大小
     url = models.CharField(max_length=FIELD_URL_MAX_LENGTH)                      # 云端地址
 
     class Meta:
         db_table = 'file'
-
-
-class Image(File):
-    """
-    图片文件
-    """
-    width = models.IntegerField(blank=True)                     # 图片宽度（px）
-    height = models.IntegerField(blank=True)                    # 图片高度(px)
-
-    class Meta:
-        db_table = 'image'
-
-    class FileMeta:
-        exclude_fields = []
-        exclude_fields_append = ['id', 'lft', 'rght', 'tree_id', 'parent']
-
 
 
 class Tag(models.Model):
@@ -74,7 +62,9 @@ class Game(models.Model):
     #flash, app, apk上传后，将其存储到云端，数据库中保留云端的下载路径
     flash = models.ForeignKey(File, related_name='game_flash_map')  # 原始flash文件（保存到云端，数据库存储云端的下载地址）
     ipa = models.ForeignKey(File, related_name='game_ipa_map', blank=True)    # 上传的ios文件（保存到云端，数据库存储云端的下载地址）
-    apk = models.ForeignKey(File, related_name='game_apk_map')    # 制作成的apk文件（保存到云端，数据库存储云端的下载地址）
+    apk = models.ForeignKey(File, related_name='game_apk_map', blank=True)    # 制作成的apk文件（保存到云端，数据库存储云端的下载地址）
+
+    apk_pack = models.ForeignKey(File, related_name='local_android_package', blank=True)    # 本地应用商店的android包下载地址
 
     class Meta:
         db_table = 'game'

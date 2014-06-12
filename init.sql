@@ -1,23 +1,18 @@
-
-CREATE DATABASE ysgk;
-USE ysgk;
+CREATE DATABASE  IF NOT EXISTS `ysgk`;
+USE `ysgk`;
 
 CREATE TABLE `file` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `create_time` datetime NOT NULL,
     `name` varchar(1024) NOT NULL,
+    `use_on` varchar(1024) NOT NULL,
     `mini_type` varchar(1024) NOT NULL,
+    `width` integer,
+    `height` integer,
     `size` integer NOT NULL,
     `url` varchar(2048) NOT NULL
 )
 ;
-CREATE TABLE `image` (
-    `file_ptr_id` integer NOT NULL PRIMARY KEY,
-    `width` integer NOT NULL,
-    `height` integer NOT NULL
-)
-;
-ALTER TABLE `image` ADD CONSTRAINT `file_ptr_id_refs_id_cbd6d9ea` FOREIGN KEY (`file_ptr_id`) REFERENCES `file` (`id`);
 CREATE TABLE `tag` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `name` varchar(1024) NOT NULL,
@@ -52,7 +47,8 @@ CREATE TABLE `game` (
     `rec_screen_id` integer NOT NULL,
     `flash_id` integer NOT NULL,
     `ipa_id` integer NOT NULL,
-    `apk_id` integer NOT NULL
+    `apk_id` integer NOT NULL,
+    `apk_pack_id` integer NOT NULL
 )
 ;
 ALTER TABLE `game` ADD CONSTRAINT `icon_id_refs_id_2adc86ff` FOREIGN KEY (`icon_id`) REFERENCES `file` (`id`);
@@ -60,6 +56,7 @@ ALTER TABLE `game` ADD CONSTRAINT `rec_screen_id_refs_id_2adc86ff` FOREIGN KEY (
 ALTER TABLE `game` ADD CONSTRAINT `flash_id_refs_id_2adc86ff` FOREIGN KEY (`flash_id`) REFERENCES `file` (`id`);
 ALTER TABLE `game` ADD CONSTRAINT `ipa_id_refs_id_2adc86ff` FOREIGN KEY (`ipa_id`) REFERENCES `file` (`id`);
 ALTER TABLE `game` ADD CONSTRAINT `apk_id_refs_id_2adc86ff` FOREIGN KEY (`apk_id`) REFERENCES `file` (`id`);
+ALTER TABLE `game` ADD CONSTRAINT `apk_pack_id_refs_id_2adc86ff` FOREIGN KEY (`apk_pack_id`) REFERENCES `file` (`id`);
 ALTER TABLE `game_tags` ADD CONSTRAINT `game_id_refs_id_da4533b5` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`);
 ALTER TABLE `game_screens` ADD CONSTRAINT `game_id_refs_id_47c1073b` FOREIGN KEY (`game_id`) REFERENCES `game` (`id`);
 CREATE INDEX `game_465cb59b` ON `game` (`icon_id`);
@@ -67,6 +64,7 @@ CREATE INDEX `game_0229d4d2` ON `game` (`rec_screen_id`);
 CREATE INDEX `game_c74a3f57` ON `game` (`flash_id`);
 CREATE INDEX `game_f524f373` ON `game` (`ipa_id`);
 CREATE INDEX `game_660e1303` ON `game` (`apk_id`);
+CREATE INDEX `game_364de4fe` ON `game` (`apk_pack_id`);
 
 INSERT INTO tag (name, name_ch) VALUES ('Management', '经营');
 INSERT INTO tag (name, name_ch) VALUES ('Strategy', '策略');

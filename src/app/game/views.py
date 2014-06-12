@@ -47,7 +47,9 @@ class Views(BaseView):
         game.rec_screen_id = request.POST.get('rec_screen')          # 推荐图片_id
         game.flash_id = request.POST.get('flash')          # flash文件_id
         game.apk_id = request.POST.get('apk')          # apk文件_id
-        game.ipa_id = request.POST.get('ipa')          # ipa文件_id
+        game.ipa_id = request.POST.get('ipa')          # apk文件_id
+        game.apk_pack_id = request.POST.get('apk_pack')         # 本地应用商店打包文件
+
         ret =  game_service.add_game(game)
         return HttpResponse(ret.to_json())
 
