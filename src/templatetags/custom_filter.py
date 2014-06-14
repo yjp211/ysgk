@@ -31,6 +31,30 @@ def pretty_datetime(value):
     except:
         return ''
 
+KB = 1024
+MB = 1024 * 1024
+GB = 1024 * 1024
+
+
+def pretty_size(value):
+    """
+    对文件大小的输出进行美化
+    :param value:
+    :return:
+    """
+    try:
+        value = int(value)
+        if value >= GB:
+            return "%sG" % (value / GB)
+        elif value >= MB:
+            return "%sM" % (value / MB)
+        elif value >= KB:
+            return "%sK" % (value / KB)
+        else:
+            return value
+    except:
+        return value
+
 def cut_string(value, length):
     """
     根据指定长度截断字符，剩余的部分用省略号...代替
@@ -47,7 +71,22 @@ def cut_string(value, length):
     except:
         return value
 
+def loop_range(value, step=1):
+    """
+    用于在模版中循环多少次数
+    :param value: 字符
+    :param step: 间隔
+    :return:
+    """
+    try:
+        value = int(value)
+        return range(0, value, step)
+    except:
+        return [value]
+
 
 register.filter('algorithm', algorithm)
 register.filter('pretty_datetime', pretty_datetime)
+register.filter('pretty_size', pretty_size)
 register.filter('cut_string', cut_string)
+register.filter('loop_range', loop_range)

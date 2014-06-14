@@ -18,36 +18,166 @@
 {% block main %}
     <div class="container">
         <div class="grid-wrap">
-            <div class="row grid-head">
-                 <div class="col-md-offset-10 col-md-2">
-                    <a href="{% url 'game_prepar_add' %}" class="btn btn-link">添加游戏</a>
+            <div class="grid-head">
+                <div class="row grid-tab">
+                    <ul class="nav nav-tabs">
+                        <li><a href="#empty"></a></li>
+                        <li class="active"><a href="#home" data-toggle="tab">全部游戏</a></li>
+                        {% for category in category_list %}
+                            <li><a href="#{{ category.id }}" data-toggle="tab">{{ category.name_ch }}</a></li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+                <div class="row">
+                    <br>
+                </div>
+                <!--
+                <div class="row grid-query ">
+                    <div class="col-md-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default ">
+                                关键字 <span class="glyphicon glyphicon-search"></span></button>
+                        </span>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="col-md-10">
+                            <div class="btn-group">
+                                <button type="button" class="btn dropdown-toggle">
+                                    名称排序 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>没得</li>
+                                    <li><a href="#">游戏名-字典升序 <span class="glyphicon glyphicon-arrow-up"></span> </a>
+                                    </li>
+                                    <li><a href="#">游戏名-字典降序 <span class="glyphicon glyphicon-arrow-down"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                    时间排序 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">创建时间-由现在到过去 <span class="glyphicon glyphicon-arrow-up"></span></a>
+                                    </li>
+                                    <li><a href="#">创建时间-由过去到现在 <span class="glyphicon glyphicon-arrow-down"></span></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    标签查询 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for tag in tag_list %}
+                                        <li><a href="#">{{ tag.name_ch }}({{ tag.name }})</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                    系列查询 <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    {% for tag in tag_list %}
+                                        <li><a href="#">{{ tag.name_ch }}({{ tag.name }})</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="btn-group">
+                                <a href="{% url 'game_prepar_add' %}" class="btn btn-link">添加游戏</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                -->
+
+                <div class="row">
+                    <div class="col-md-offset-10 col-md-2">
+                        <div class="btn-group">
+                            <a href="{% url 'game_prepar_add' %}" class="btn btn-link">添加游戏</a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="grid-body">
                 {% for game in game_list %}
                     <div class="row grid-item">
                         <div class="game-info col-md-2">
-                            <div class="game-title"
-                                 title="{{ game.name_ch }}">{{ game.name_ch  | cut_string:"10" }}</div>
+                            <div class="game-title" title="{{ game.name_ch }}">
+                                <span class="game-name">{{ game.name_ch  | cut_string:"6" }}</span>
+
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-xs btn-link dropdown-toggle"
+                                            data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="{% url 'game_tail' game.id %}" >详细</a></li>
+                                        <li><a href="{% url 'game_prepar_update' game.id %}" >编辑</a></li>
+                                        <li><a href="{{ game.flash.url }}">删除</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        {% if game.flash %}
+                                            <li><a href="{{ game.flash.url }}">下载原始Flash</a></li>
+                                        {% endif %}
+                                        {% if game.apk_pack %}
+                                            <li><a href="{{ game.apk_pack.url }}">下载应用商店安装包</a></li>
+                                        {% endif %}
+                                        {% if game.apk %}
+                                            <li><a href="{{ game.apk.url }}">下载Android安装包</a></li>
+                                        {% endif %}
+                                        {% if game.ipa %}
+                                            <li><a href="{{ game.ipa.url }}">下载IOS安装包</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
                             <div class="game-icon">
                                 <img src="{{ game.icon.url }}"
-                                     alt="{{ game.name_ch }}">
+                                     alt="{{ game.name_ch }}" title="{{ game.desc_ch }}">
+                            </div>
+                            <div class="game-star">
+                                {% for tag in game.star|loop_range %}
+                                    <span class="glyphicon glyphicon-star"></span>
+                                {% endfor %}
+
                             </div>
                             <div class="game-time">{{ game.create_time | pretty_datetime }}</div>
                         </div>
                         <div class="game-tail col-md-2">
                             <div class="game-tags">
+                                <div class="text-info">标签：</div>
                                 {% for tag in game.tags.all %}
                                     <span class="game-tag">{{ tag.name_ch }} </span>
                                 {% endfor %}
                             </div>
-                            <div class="game-desc" title="{{ game.desc_ch }}">{{ game.desc_ch | cut_string:"40" }}</div>
+                            <div class="game-categorys">
+                                <div class="text-info">系列：</div>
+                                {% for store in game.localstore_set.all %}
+                                    <span class="game-category"
+                                          title="系列中排行{{ store.rank }}">{{ store.category.name_ch }}</span>
+                                {% empty %}
+                                {% endfor %}
+                            </div>
                         </div>
-                        <div class="game-screens col-md-8">
-                            <div class="screen-wrap" style="width: {{ game.screens.count | algorithm:"(%s+1)*120+20" }}px;">
+                        <div class="game-desc col-md-3">
+                            <span title="{{ game.desc_ch }}">
+                            {{ game.desc_ch | cut_string:"100" }}
+                            </span>
+                        </div>
+
+                        <div class="game-screens col-md-4">
+                            <div class="screen-wrap"
+                                 style="width: {{ game.screens.count | algorithm:"(%s+1)*110+20" }}px;">
                                 <img src="{{ game.rec_screen.url }}">
                                 {% for screen in game.screens.all %}
-                                <img src="{{ screen.url }}">
+                                    <img src="{{ screen.url }}">
                                 {% endfor %}
                             </div>
                         </div>
@@ -55,5 +185,4 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
 {% endblock %}

@@ -6,10 +6,36 @@ from django.db import models
 FILED_NORMAL_MAX_LENGTH = 1024
 FIELD_NAME_MAX_LENGTH = 1024
 FIELD_URL_MAX_LENGTH = 2048
-FILE_USE_ON = ['icon', 'screens', 'rec_screen','flash', 'apk', 'ipa', 'apk_pack']
+FILE_USE_ON = ['icon', 'screens', 'rec_screen', 'flash', 'apk', 'ipa', 'apk_pack']
 
 
-class File(models.Model):
+
+class CustomManager(models.Manager):
+
+    def all_id(self):
+        return [ obj.id for obj in self.all() ]
+
+
+
+class BaseModel(models.Model):
+    objects = CustomManager()
+
+    def save_most(self):
+        print self._meta.fields
+        field_names = []
+        for field in self._meta.fields:
+            if not field.primary_key:
+                if hasattr(self, field.name):
+                    val = getattr(self, field.name)
+                    if val is not None and  val is not field.default:
+                        field_names.append(field.name)
+        print field_names
+        return self.save(update_fields=field_names)
+
+    class Meta:
+        abstract = True
+
+class File(BaseModel):
     """
     文件
     """
@@ -27,18 +53,32 @@ class File(models.Model):
         db_table = 'file'
 
 
-class Tag(models.Model):
+class Tag(BaseModel):
     """
     游戏的标签类型
     """
-    name = models.CharField(max_length=1024)        # 标签名称
-    name_ch = models.CharField(max_length=1024)     # 标签的中文名称
+    name = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)        # 标签名称
+    name_ch = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)     # 标签的中文名称
 
     class Meta:
         db_table = 'tag'
 
 
-class Game(models.Model):
+class Category(BaseModel):
+    """
+    游戏系列
+    """
+
+    create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
+    name = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)        # 英文名称
+    name_ch = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)     # 中文名称
+    icon = models.ForeignKey(File, related_name='category_icon_map')        # 系列图标
+
+    class Meta:
+        db_table = 'category'
+
+
+class Game(BaseModel):
     """
     游戏模型
     """
@@ -46,26 +86,47 @@ class Game(models.Model):
     create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
     update_time = models.DateTimeField(auto_now=True)            # 最后更新时间
 
-    name = models.CharField(max_length=1024)        # 英文名称
-    name_ch = models.CharField(max_length=1024)     # 中文名称
+    name = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)        # 英文名称
+    name_ch = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)     # 中文名称
 
     desc = models.TextField()                       # 描述（英文）
     desc_ch = models.TextField()                    # 描述（中文）
 
+    star = models.IntegerField(default=4)   # 游戏星级 [1..5]
+
     tags = models.ManyToManyField(Tag, related_name='game_tag_map')
 
     #所有图片单独存储在一个表中， 指定"related_name" ORM会而外的创建关系表
-    icon = models.ForeignKey(File, related_name='game_icon_map')        # 图标
-    screens = models.ManyToManyField(File, related_name='game_screens_map')   # 截图，多个
-    rec_screen = models.ForeignKey(File, related_name='game_rec_screen_map')   # 推荐截图
+    icon = models.ForeignKey(File, related_name='game_icon_map', null=True, blank=True, on_delete=models.SET_NULL)        # 图标被删除后不会删除游戏
+    screens = models.ManyToManyField(File, related_name='game_screens_map', null=True, blank=True)   # 截图，多个
+    rec_screen = models.ForeignKey(File, related_name='game_rec_screen_map', null=True, blank=True, on_delete=models.SET_NULL)   # 推荐截图
 
     #flash, app, apk上传后，将其存储到云端，数据库中保留云端的下载路径
-    flash = models.ForeignKey(File, related_name='game_flash_map')  # 原始flash文件（保存到云端，数据库存储云端的下载地址）
-    ipa = models.ForeignKey(File, related_name='game_ipa_map', blank=True)    # 上传的ios文件（保存到云端，数据库存储云端的下载地址）
-    apk = models.ForeignKey(File, related_name='game_apk_map', blank=True)    # 制作成的apk文件（保存到云端，数据库存储云端的下载地址）
+    # 原始flash文件（保存到云端，数据库存储云端的下载地址）
+    flash = models.ForeignKey(File, related_name='game_flash_map', null=True, blank=True, on_delete=models.SET_NULL)
 
-    apk_pack = models.ForeignKey(File, related_name='local_android_package', blank=True)    # 本地应用商店的android包下载地址
+    # 上传的ios文件（保存到云端，数据库存储云端的下载地址）
+    ipa = models.ForeignKey(File, related_name='game_ipa_map', null=True, blank=True, on_delete=models.SET_NULL)
+    # 制作成的apk文件（保存到云端，数据库存储云端的下载地址）
+    apk = models.ForeignKey(File, related_name='game_apk_map', null=True, blank=True, on_delete=models.SET_NULL)
+    # 本地应用商店的android包下载地址
+    apk_pack = models.ForeignKey(File, related_name='local_android_package', null=True, blank=True, on_delete=models.SET_NULL)
+
+    categorys = models.ManyToManyField(Category, through='LocalStore')
 
     class Meta:
         db_table = 'game'
 
+
+class LocalStore(BaseModel):
+    """
+    应用商店
+    """
+
+    game = models.ForeignKey(Game)     # 对应的游戏
+    category = models.ForeignKey(Category) # 对应的系列
+    rank = models.IntegerField(default=50)   # 游戏排行 权值 [1..100]
+
+    class Meta:
+        db_table = 'local_store'
+        unique_together = ('game', 'category')   #联合主键

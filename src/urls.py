@@ -19,6 +19,7 @@ urlpatterns += patterns('',
     url(r'^home/', include('src.app.home.urls')),
     url(r'^auth/', include('src.app.auth.urls')),
     url(r'^game/', include('src.app.game.urls')),
+    url(r'^store/', include('src.app.store.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()
