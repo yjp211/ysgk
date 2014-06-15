@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import os
 
-DEBUG = True
+DEBUG = False
 DEBUG_LEVEL = 'DEBUG'
 TEMPLATE_DEBUG = DEBUG
 
@@ -16,31 +16,35 @@ if DEBUG:
 else:
     OPEN_API_URL_PREFIX = 'http://106.187.99.190/api'
 
-if DEBUG:
-    UPYUN = {
+UPYUN = {
         'BUCKETNAME': 'ykwsys',
         'USERNAME': 'ykwsys',
         'PASSWORD': 'ykw11233',
         'TIMEOUT': 30,
     }
-else:
-    UPYUN = {
-        'BUCKETNAME': 'ykwsys',
-        'USERNAME': 'ykwsys',
-        'PASSWORD': 'mysql_860102',
-        'TIMEOUT': 30,
-    }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'ysgk',
-        'USER': 'root',
-        'PASSWORD': 'qwer1234',
-        'HOST': '127.0.0.1',
-        'PORT': '3306',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'ysgk',
+            'USER': 'root',
+            'PASSWORD': 'qwer1234',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'ysgk',
+            'USER': 'root',
+            'PASSWORD': 'mysql_860102',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+        }
+    }
 
 CACHES = {
     'default': {
