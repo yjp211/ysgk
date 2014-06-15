@@ -5,7 +5,7 @@ from src.misc.base.view import require_post
 from src.misc.base.view import BaseView
 
 from src.app.game.models import Tag
-from app.game.services.tag import tag_service
+from src.app.game.services.tag import tag_service
 
 __all__ = ['tag_views']
 
