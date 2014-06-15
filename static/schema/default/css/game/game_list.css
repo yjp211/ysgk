@@ -4,7 +4,6 @@
     background-color: #ffffff;
 }
 
-
 .game-info,
 .game-tail,
 .game-handle,
@@ -23,15 +22,14 @@
 
 }
 
-.game-info .game-title .game-name{
+.game-info .game-title .game-name {
     font-size: 1.4em;
     font-weight: bold;
 }
 
-.game-info .game-title .btn-group{
+.game-info .game-title .btn-group {
     margin-top: -6px;
 }
-
 
 .game-info .game-star {
     margin-bottom: 5px;
@@ -45,7 +43,6 @@
     width: 85px;
     height: 85px;
 }
-
 
 .game-info .game-time {
     margin-bottom: 5px;
@@ -90,11 +87,31 @@
     height: 100%;
 }
 
-.screen-wrap img{
+.screen-wrap img {
     display: inline-block;
 }
 
-
 .game-handle {
     padding-top: 30px;
+}
+
+.dropdown-menu > li > label {
+    display: block;
+    padding: 3px 20px 3px 30px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.428571429;
+    color: #333333;
+    white-space: nowrap;
+}
+
+.dropdown-menu > li > label:hover,
+.dropdown-menu > li > label:focus {
+    color: #262626;
+    text-decoration: none;
+    background-color: #f5f5f5;
+}
+
+.search-padding {
+    padding-right: 13px;
 }

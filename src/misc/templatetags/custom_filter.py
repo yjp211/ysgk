@@ -84,9 +84,37 @@ def loop_range(value, step=1):
     except:
         return [value]
 
+def str_split(value, separator=','):
+    """
+    将字符串根据分隔符分割成列表
+    :param value: 字符
+    :param separator: 分隔符
+    :return:
+    """
+    try:
+        value = str(value)
+        return value.split(separator)
+    except:
+        return [value]
+
+def model_ids_split(value, separator=','):
+    """
+    将model id组成的id字符串分割成id列表
+    :param value: 字符
+    :param separator: 分隔符
+    :return:
+    """
+    try:
+        value = str(value)
+        return [ int(item) for item in value.split(separator) if item.strip() ]
+    except:
+        return [value]
+
 
 register.filter('algorithm', algorithm)
 register.filter('pretty_datetime', pretty_datetime)
 register.filter('pretty_size', pretty_size)
 register.filter('cut_string', cut_string)
 register.filter('loop_range', loop_range)
+register.filter('str_split', str_split)
+register.filter('model_ids_split', model_ids_split)

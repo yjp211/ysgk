@@ -19,101 +19,145 @@
     <div class="container">
         <div class="grid-wrap">
             <div class="grid-head">
-                <div class="row grid-tab">
-                    <ul class="nav nav-tabs">
-                        <li><a href="#empty"></a></li>
-                        <li class="active"><a href="#home" data-toggle="tab" >全部游戏</a></li>
-                        {% for category in category_list %}
-                            <li><a href="#{{ category.id }}" data-toggle="tab">{{ category.name_ch }}</a></li>
-                        {% endfor %}
-
-                    </ul>
-                </div>
-                <div class="row">
-                    <br>
-                </div>
-                <!--
-                <div class="row grid-query ">
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button type="button" class="btn btn-default ">
-                                关键字 <span class="glyphicon glyphicon-search"></span></button>
-                        </span>
+                <form action="{% url 'game_list' %}"  id="query-form" method="POST">
+                    {% csrf_token %}
+                    <div class="row grid-query ">
+                        <div class="col-md-3" style="padding-right: 0;">
+                            <div class="input-group">
+                              <span class="input-group-addon">关键字</span>
+                              <input type="text" name="key_word" class="form-control" value="{{ query_option.key_word }}">
+                            </div>
+                        </div>
+                        <div class="col-md-9 " style="padding-left: 0;">
+                            <div class="col-md-10 search-padding">
+                                <div class="btn-group search-padding">
+                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                        排序依据 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu " role="menu">
+                                        <li>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sort_field" value="update_time"
+                                                        {% if query_option.sort_field == 'update_time' %}
+                                                            checked="cheched"
+                                                        {% endif %}
+                                                        >
+                                                最后更新时间
+                                            </label>
+                                        </li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sort_field" value="name_ch"
+                                                       {% if query_option.sort_field == 'name_ch' %}
+                                                            checked="cheched"
+                                                        {% endif %}
+                                                        >
+                                                游戏名称
+                                            </label>
+                                        </li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sort_field" value="gamecategory__rank"
+                                                        {% if query_option.sort_field == 'gamecategory__rank' %}
+                                                            checked="cheched"
+                                                        {% endif %}
+                                                        >
+                                                系列中的排名
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group search-padding">
+                                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                                        排序方式 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu " role="menu">
+                                        <li>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sort_type" value="asce"
+                                                        {% if query_option.sort_type == 'asce' %}
+                                                            checked="cheched"
+                                                        {% endif %}
+                                                        >
+                                                升序
+                                            </label>
+                                        </li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="sort_type" value="desc"
+                                                        {% if query_option.sort_type == 'desc' %}
+                                                            checked="cheched"
+                                                        {% endif %}
+                                                        >
+                                                降序
+                                            </label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="btn-group search-padding">
+                                    <input type="hidden" name="tags" value="{{ query_option.tags }}" >
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        标签查询 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {% for tag in tag_list %}
+                                            <li>
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="tag" value="{{ tag.id }}"
+                                                           {% if tag.id in query_option.tags|model_ids_split %}
+                                                                checked="cheched"
+                                                           {% endif %}
+                                                            >
+                                                    {{ tag.name_ch }}({{ tag.name }})
+                                                </label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <div class="btn-group search-padding">
+                                    <input type="hidden" name="categorys" value="{{ query_option.categorys }}" >
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                                        系列查询 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        {% for category in category_list %}
+                                            <li>
+                                                <label class="checkbox-inline">
+                                                    <input type="checkbox" name="category" value="{{ category.id }}"
+                                                           {% if category.id in query_option.categorys|model_ids_split %}
+                                                                checked="cheched"
+                                                           {% endif %}
+                                                            >
+                                                    {{ category.name_ch }}
+                                                </label>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                <button type="submit" class="btn btn-sm btn-primary search-paddin" id="query-btn">
+                                  查询 <span class="glyphicon glyphicon-search"></span>
+                                </button>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                                        添加 <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li><a href="{% url 'game_prepar_add' %}" >游戏</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li><a href="{% url 'game_category_prepar_add' %}" >系列</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li><a href="{% url 'game_tag_prepar_add' %}" >标签</a></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-9">
-                        <div class="col-md-10">
-                            <div class="btn-group">
-                                <button type="button" class="btn dropdown-toggle">
-                                    名称排序 <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li>没得</li>
-                                    <li><a href="#">游戏名-字典升序 <span class="glyphicon glyphicon-arrow-up"></span> </a>
-                                    </li>
-                                    <li><a href="#">游戏名-字典降序 <span class="glyphicon glyphicon-arrow-down"></span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                    时间排序 <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">创建时间-由现在到过去 <span class="glyphicon glyphicon-arrow-up"></span></a>
-                                    </li>
-                                    <li><a href="#">创建时间-由过去到现在 <span class="glyphicon glyphicon-arrow-down"></span></a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    标签查询 <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    {% for tag in tag_list %}
-                                        <li><a href="#">{{ tag.name_ch }}({{ tag.name }})</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                    系列查询 <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    {% for tag in tag_list %}
-                                        <li><a href="#">{{ tag.name_ch }}({{ tag.name }})</a></li>
-                                    {% endfor %}
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="btn-group">
-                                <a href="{% url 'game_prepar_add' %}" class="btn btn-link">添加游戏</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                -->
-
-                <div class="row">
-                    <div class="col-md-offset-10 col-md-2">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
-                                添加 <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="{% url 'game_prepar_add' %}" >游戏</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li><a href="{% url 'game_category_prepar_add' %}" >系列</a></li>
-                                <li role="presentation" class="divider"></li>
-                                <li><a href="{% url 'game_tag_prepar_add' %}" >标签</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
             <div class="grid-body">
                 {% for game in game_list %}
@@ -156,7 +200,7 @@
                                 {% endfor %}
 
                             </div>
-                            <div class="game-time">{{ game.create_time | pretty_datetime }}</div>
+                            <div class="game-time">{{ game.update_time | pretty_datetime }}</div>
                         </div>
                         <div class="game-tail col-md-2">
                             <div class="game-tags">
@@ -183,7 +227,9 @@
                         <div class="game-screens col-md-4">
                             <div class="screen-wrap"
                                  style="width: {{ game.screens.count | algorithm:"(%s+1)*110+20" }}px;">
-                                <img src="{{ game.rec_screen.url }}">
+                                {% if game.rec_screen %}
+                                    <img src="{{ game.rec_screen.url }}">
+                                {% endif %}
                                 {% for screen in game.screens.all %}
                                     <img src="{{ screen.url }}">
                                 {% endfor %}

@@ -1,11 +1,12 @@
 # -*- coding:utf-8 -*-
+from django.db.models import Q
 
 from src.misc import Result
 from src.misc.base.service import BaseService
 from src.misc.debug import log_debug
 
 
-from src.app.game.models import GameCategory
+from src.app.game.models import Game, GameCategory
 
 __all__ = ['game_service']
 
@@ -37,8 +38,6 @@ class Service(BaseService):
                 game_category.save()
 
 
-
-
     def update_game(self, game):
         """
        编辑游戏
@@ -62,5 +61,43 @@ class Service(BaseService):
             ret.msg = u"数据库操作失败"
             raise e
         return ret
+
+    def query_game(self, query_option):
+        """
+        根据查询条件显示游戏
+        :param query_form:
+        :return:
+        """
+        ret = Result()
+        game_list = Game.objects.all()
+        if query_option:
+            key_word = query_option.get('key_word')
+            if key_word:
+                game_list = game_list.filter(Q(name__contains=key_word)
+                                              | Q(name_ch__contains=key_word)
+                                              | Q(desc__contains=key_word)
+                                              | Q(desc_ch__contains=key_word))
+            tag_ids = query_option.get('tags')
+            if tag_ids:
+                for id in tag_ids.split(','):
+                    if id.strip():
+                        game_list = game_list.filter(tags=id.strip())
+
+            category_ids = query_option.get('categorys')
+            if category_ids:
+                for id in category_ids.split(','):
+                    if id.strip():
+                        game_list = game_list.filter(categorys=id.strip())
+
+            sort_field = query_option.get('sort_field')
+            if sort_field:
+                sort_type = query_option.get('sort_type', 'asce')
+                if sort_type == 'desc':
+                    sort_field = '-%s' % sort_field
+                game_list = game_list.order_by(sort_field)
+                #gamecategory__rank
+        ret.data['game_list'] = game_list
+        return ret
+
 
 game_service = Service()

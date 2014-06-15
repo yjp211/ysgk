@@ -5,8 +5,11 @@ from app.game.models import Tag, Game, Category
 from src.misc.base.view import require_post
 from src.misc.base.view import BaseView
 from app.game.services.game import game_service
+from app.game.forms.query import GameQueryForm
 
 __all__ = ['game_views']
+
+
 
 
 class Views(BaseView):
@@ -18,9 +21,18 @@ class Views(BaseView):
         """
         展示所有游戏
         """
+        query_option = None
+        if request.method == 'POST':
+            query_form = GameQueryForm(request.POST)
+            if query_form.is_valid():
+                query_option = query_form.cleaned_data
+
+        ret = game_service.query_game(query_option)
+        if ret.success:
+            game_list = ret.data.get('game_list')
+
         tag_list = Tag.objects.all()
         category_list = Category.objects.all()
-        game_list = Game.objects.all()
 
         return render(request, template, locals())
 

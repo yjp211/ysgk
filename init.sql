@@ -3,7 +3,6 @@ BEGIN;
 DROP DATABASE  IF EXISTS `ysgk`;
 CREATE DATABASE `ysgk`;
 USE `ysgk`;
-
 CREATE TABLE `game_file` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `create_time` datetime NOT NULL,
@@ -101,21 +100,21 @@ CREATE INDEX `game_categorys_6f33f001` ON `game_categorys` (`category_id`);
 
 
 
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Management', '经营');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Strategy', '策略');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Puzzle', '益智');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Casual', '休闲');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Action', '动作');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Adventures', '冒险');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Sports', '体育');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Arcade', '街机');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Physics', '物理');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Shooter', '射击');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Defense', '塔防');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Racing', '竞速');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Cards', '棋牌');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Role-play', '角色扮演');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Kids', '小孩');
-INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Zuma', '祖玛');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Management', '经营', '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Strategy', '策略', '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Puzzle', '益智',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Casual', '休闲',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Action', '动作',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Adventures', '冒险',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Sports', '体育',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Arcade', '街机',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Physics', '物理',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Shooter', '射击',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Defense', '塔防',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Racing', '竞速',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Cards', '棋牌',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Role-play', '角色扮演',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Kids', '小孩',  '', '');
+INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Zuma', '祖玛',  '', '');
 
 COMMIT;
