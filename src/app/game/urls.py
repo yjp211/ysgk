@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^prepar_add/$', game_views.prepar_update, name='game_prepar_add'),
     url(r'^prepar_update/(?P<id>.+)/$', game_views.prepar_update, name='game_prepar_update'),
     url(r'^update/$', game_views.update, name='game_update'),
+    url(r'^delete/(?P<id>.+)/$', game_views.delete, name='game_delete'),
 )
 
 urlpatterns += patterns('',

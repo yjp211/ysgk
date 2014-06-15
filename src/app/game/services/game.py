@@ -62,6 +62,35 @@ class Service(BaseService):
             raise e
         return ret
 
+    def delete_game(self, id):
+        """
+       编辑游戏
+        """
+        ret = Result()
+        try:
+            game = Game.objects.get(id=id)
+            if game.icon:
+                game.icon.delete()
+            if game.rec_screen:
+                game.rec_screen.delete()
+            if game.flash:
+                game.flash.delete()
+            if game.ipa:
+                game.ipa.delete()
+            if game.apk:
+                game.apk.delete()
+            if game.apk_pack:
+                game.apk_pack.delete()
+            game.screens.all().delete()
+
+            game.delete()
+        except Exception, e:
+            log_debug.error(u"删除游戏<id:%s>，数据库操作失败，%s" % (id, e))
+            ret.success = False
+            ret.msg = u"数据库操作失败"
+            raise e
+        return ret
+
     def query_game(self, query_option):
         """
         根据查询条件显示游戏

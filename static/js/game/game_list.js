@@ -13,3 +13,28 @@ $(function(){
    });
 
 });
+
+function  deleteGame(obj){
+
+    if(!confirm("确认删除该游戏？")){
+        return false
+    }
+    var url = $(obj).attr('url');
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(ret){
+            if(ret.success){
+                messagebox("删除游戏成功");
+                $("#query-form").submit()
+            }else{
+                messagebox("删除游戏失败，" + ret.msg);
+            }
+        },
+        error: function(){
+            messagebox("删除游戏失败，网络出现错误");
+        }
+    });
+
+}

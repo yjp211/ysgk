@@ -54,7 +54,7 @@ class Views(BaseView):
         添加或修改游戏
         """
         game = Game()
-        game.id = request.POST.get('id', None)       # 英文名称
+        game.id = request.POST.get('id', None)       # 游戏ID
         game.name = request.POST.get('name')       # 英文名称
         game.name_ch = request.POST.get('name_ch')     # 中文名称
         game.desc = request.POST.get('desc')                        # 描述（英文）
@@ -74,6 +74,13 @@ class Views(BaseView):
         game.apk_pack_id = request.POST.get('apk_pack')         # 本地应用商店打包文件
 
         ret =  game_service.update_game(game)
+        return HttpResponse(ret.to_json())
+
+    def delete(self, request, id):
+        """
+        删除游戏
+        """
+        ret =  game_service.delete_game(id)
         return HttpResponse(ret.to_json())
 
 
