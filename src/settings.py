@@ -115,7 +115,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'src',
+    'src.misc',
+    'src.app.game',
 )
 
 LOG_ROOT = os.path.join(PROJECT_ROOT, 'log')

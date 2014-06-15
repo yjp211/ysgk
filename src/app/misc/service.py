@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 
-from src.models import File
+from app.game.models import File
 from src.misc import Result
 from src.misc.base.service import BaseService
 from src.misc.debug import log_debug

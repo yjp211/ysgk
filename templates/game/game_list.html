@@ -159,9 +159,9 @@
                             </div>
                             <div class="game-categorys">
                                 <div class="text-info">系列：</div>
-                                {% for store in game.localstore_set.all %}
+                                {% for map in game.gamecategory_set.all %}
                                     <span class="game-category"
-                                          title="系列中排行{{ store.rank }}">{{ store.category.name_ch }}</span>
+                                          title="系列中排行{{ map.rank }}">{{ map.category.name_ch }}</span>
                                 {% empty %}
                                 {% endfor %}
                             </div>
@@ -185,4 +185,5 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
 {% endblock %}

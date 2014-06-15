@@ -2,7 +2,7 @@
 
 from django.conf.urls import patterns, url
 
-from src.app.game.views import game_views
+from src.app.game.views.game import game_views
 
 
 urlpatterns = patterns('',

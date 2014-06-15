@@ -1,12 +1,10 @@
 # -*- coding:utf-8 -*-
 from django.shortcuts import render, HttpResponse
 
-from src.models import Tag, Game, Category
-
+from app.game.models import Tag, Game, Category
 from src.misc.base.view import require_post
 from src.misc.base.view import BaseView
-
-from src.app.game.service import game_service
+from app.game.services.game import game_service
 
 __all__ = ['game_views']
 

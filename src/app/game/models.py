@@ -2,38 +2,8 @@
 
 from django.db import models
 
+from src.misc.base.model import BaseModel, FIELD_NAME_MAX_LENGTH, FIELD_URL_MAX_LENGTH
 
-FILED_NORMAL_MAX_LENGTH = 1024
-FIELD_NAME_MAX_LENGTH = 1024
-FIELD_URL_MAX_LENGTH = 2048
-FILE_USE_ON = ['icon', 'screens', 'rec_screen', 'flash', 'apk', 'ipa', 'apk_pack']
-
-
-
-class CustomManager(models.Manager):
-
-    def all_id(self):
-        return [ obj.id for obj in self.all() ]
-
-
-
-class BaseModel(models.Model):
-    objects = CustomManager()
-
-    def save_most(self):
-        print self._meta.fields
-        field_names = []
-        for field in self._meta.fields:
-            if not field.primary_key:
-                if hasattr(self, field.name):
-                    val = getattr(self, field.name)
-                    if val is not None and  val is not field.default:
-                        field_names.append(field.name)
-        print field_names
-        return self.save(update_fields=field_names)
-
-    class Meta:
-        abstract = True
 
 class File(BaseModel):
     """
@@ -50,7 +20,7 @@ class File(BaseModel):
     url = models.CharField(max_length=FIELD_URL_MAX_LENGTH)                      # 云端地址
 
     class Meta:
-        db_table = 'file'
+        db_table = 'game_file'
 
 
 class Tag(BaseModel):
@@ -61,7 +31,7 @@ class Tag(BaseModel):
     name_ch = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)     # 标签的中文名称
 
     class Meta:
-        db_table = 'tag'
+        db_table = 'game_tag'
 
 
 class Category(BaseModel):
@@ -75,7 +45,7 @@ class Category(BaseModel):
     icon = models.ForeignKey(File, related_name='category_icon_map')        # 系列图标
 
     class Meta:
-        db_table = 'category'
+        db_table = 'game_category'
 
 
 class Game(BaseModel):
@@ -112,15 +82,15 @@ class Game(BaseModel):
     # 本地应用商店的android包下载地址
     apk_pack = models.ForeignKey(File, related_name='local_android_package', null=True, blank=True, on_delete=models.SET_NULL)
 
-    categorys = models.ManyToManyField(Category, through='LocalStore')
+    categorys = models.ManyToManyField(Category, through='GameCategory')
 
     class Meta:
-        db_table = 'game'
+        db_table = 'game_game'
 
 
-class LocalStore(BaseModel):
+class GameCategory(BaseModel):
     """
-    应用商店
+    游戏系列映射
     """
 
     game = models.ForeignKey(Game)     # 对应的游戏
@@ -128,5 +98,5 @@ class LocalStore(BaseModel):
     rank = models.IntegerField(default=50)   # 游戏排行 权值 [1..100]
 
     class Meta:
-        db_table = 'local_store'
+        db_table = 'game_categorys'
         unique_together = ('game', 'category')   #联合主键
