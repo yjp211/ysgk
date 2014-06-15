@@ -3,15 +3,15 @@ import os
 import mimetypes
 
 from django.conf.urls import patterns, include, url
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-from src.settings import PROJECT_ROOT
+from django.views.static import serve
+from src.settings import PROJECT_ROOT, STATIC_ROOT
 
 mimetypes.knownfiles.append(os.path.join(PROJECT_ROOT, 'mime.type'))
 
 
 urlpatterns = patterns('src.views',
     url(r'^$', 'home', name='kss_home'),
+    url(r'^static/(?P<path>.*)$', serve, {'document_root': STATIC_ROOT}),
 )
 
 urlpatterns += patterns('',
@@ -22,5 +22,3 @@ urlpatterns += patterns('',
     url(r'^game/', include('src.app.game.urls')),
     url(r'^store/', include('src.app.store.urls')),
 )
-
-urlpatterns += staticfiles_urlpatterns()

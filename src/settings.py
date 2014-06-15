@@ -11,6 +11,8 @@ TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 PROJECT_NAME = 'ysgk'
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+ALLOWED_HOSTS = ['*']
+
 if DEBUG:
     OPEN_API_URL_PREFIX = 'http://127.0.0.1/api'
 else:
@@ -80,7 +82,10 @@ MEDIA_ROOT = ''
 
 MEDIA_URL = ''
 
-STATIC_ROOT = ''
+if DEBUG:
+    STATIC_ROOT = ''
+else:
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
 STATIC_URL = '/static/'
 
