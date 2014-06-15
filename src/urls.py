@@ -5,7 +5,7 @@ import mimetypes
 from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-from settings import PROJECT_ROOT
+from src.settings import PROJECT_ROOT
 
 mimetypes.knownfiles.append(os.path.join(PROJECT_ROOT, 'mime.type'))
 

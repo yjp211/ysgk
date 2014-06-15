@@ -1,11 +1,11 @@
 # -*- coding:utf-8 -*-
 
-from app.game.models import File
 from src.misc import Result
 from src.misc.base.service import BaseService
 from src.misc.debug import log_debug
 
 from src.app.misc.file_store import store
+from src.app.game.models import File
 
 
 __all__ = ['misc_service']

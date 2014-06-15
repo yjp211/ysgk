@@ -1,9 +1,10 @@
 # -*- coding:utf-8 -*-
 from django.shortcuts import render, HttpResponse
 
-from app.game.models import Tag
 from src.misc.base.view import require_post
 from src.misc.base.view import BaseView
+
+from src.app.game.models import Tag
 from app.game.services.tag import tag_service
 
 __all__ = ['tag_views']

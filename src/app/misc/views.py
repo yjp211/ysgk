@@ -2,11 +2,11 @@
 
 from django.shortcuts import HttpResponse
 
-from app.game.models import File
 from src.misc.base.view import require_post
 from src.misc.base.view import BaseView
 from src.app.misc.service import misc_service
 
+from src.app.game.models import File
 
 
 __all__ = ['misc_views']
