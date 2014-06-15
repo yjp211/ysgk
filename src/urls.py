@@ -15,6 +15,7 @@ urlpatterns = patterns('src.views',
 )
 
 urlpatterns += patterns('',
+    url(r'^api/', include('src.api.urls')),
     url(r'^misc/', include('src.app.misc.urls')),
     url(r'^home/', include('src.app.home.urls')),
     url(r'^auth/', include('src.app.auth.urls')),

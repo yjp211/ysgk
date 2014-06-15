@@ -11,23 +11,25 @@ TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 PROJECT_NAME = 'ysgk'
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(PROJECT_ROOT, 'database.db'),
-#         'USER': '',
-#         'PASSWORD': '',
-#         'HOST': '',
-#         'PORT': '',
-#     }
-# }
+if DEBUG:
+    OPEN_API_URL_PREFIX = 'http://127.0.0.1/api'
+else:
+    OPEN_API_URL_PREFIX = 'http://106.187.99.190/api'
 
-UPYUN = {
-    'BUCKETNAME': 'ykwsys',
-    'USERNAME': 'ykwsys',
-    'PASSWORD': 'ykw11233',
-    'TIMEOUT': 30,
-}
+if DEBUG:
+    UPYUN = {
+        'BUCKETNAME': 'ykwsys',
+        'USERNAME': 'ykwsys',
+        'PASSWORD': 'ykw11233',
+        'TIMEOUT': 30,
+    }
+else:
+    UPYUN = {
+        'BUCKETNAME': 'ykwsys',
+        'USERNAME': 'ykwsys',
+        'PASSWORD': 'mysql_860102',
+        'TIMEOUT': 30,
+    }
 
 DATABASES = {
     'default': {
