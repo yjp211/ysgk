@@ -231,20 +231,20 @@ $(function () {
             if(xhr.status == 200) {
                 var ret = xhr.response;
                 if (ret['success']) {
-                    messagebox("添加游戏成功");
+                    messagebox("操作成功");
                     window.location.href = '/game/list/';
                 } else {
-                    messagebox("添加游戏失败，" + ret['msg']);
+                    messagebox("操作失败，" + ret['msg']);
                 }
             }else{
-                messagebox("添加游戏失败，服务器异常响应");
+                messagebox("操作失败，服务器异常响应");
             }
 
         };
 
         //上传失败
         xhr.onerror = function (event) {
-            messagebox("添加游戏失败，网络出现异常");
+            messagebox("操作失败，网络出现异常");
         };
         xhr.send(formData);
         return false;

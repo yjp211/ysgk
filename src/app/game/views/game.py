@@ -14,11 +14,15 @@ class Views(BaseView):
     游戏管理视图
     """
 
-    def index(self, request, template='game/game_index.html'):
+    def list(self, request, template='game/game_list.html'):
         """
-        游戏管理界面
+        展示所有游戏
         """
-        return render(request, template)
+        tag_list = Tag.objects.all()
+        category_list = Category.objects.all()
+        game_list = Game.objects.all()
+
+        return render(request, template, locals())
 
     def prepar_update(self, request, id='', template='game/game_update.html'):
         """
@@ -27,13 +31,14 @@ class Views(BaseView):
         if id:
             game = Game.objects.get(id=id)
         tag_list = Tag.objects.all()
+        category_list = Category.objects.all()
 
         return render(request, template, locals())
 
     @require_post
     def update(self, request):
         """
-        添加游戏
+        添加或修改游戏
         """
         game = Game()
         game.id = request.POST.get('id', None)       # 英文名称
@@ -47,6 +52,7 @@ class Views(BaseView):
         game.rec_screen_id = request.POST.get('rec_screen')          # 推荐图片_id
 
         game.tag_ids = request.POST.get('tags', '')          # 标签_ids
+        game.category_ids = request.POST.get('categorys', '')          # 系列_ids
         game.screen_ids = request.POST.get('screens', '')          # 截图文件_ids
 
         game.flash_id = request.POST.get('flash')          # flash文件_id
@@ -57,23 +63,6 @@ class Views(BaseView):
         ret =  game_service.update_game(game)
         return HttpResponse(ret.to_json())
 
-    def list(self, request, template='game/game_list.html'):
-        """
-        展示所有游戏
-        """
-        tag_list = Tag.objects.all()
-        category_list = Category.objects.all()
-        game_list = Game.objects.all()
-
-        return render(request, template, locals())
-
-    def tail(self, request, id, template='game/game_tail.html'):
-        """
-        游戏详细信息
-        """
-        game = Game.objects.get(id=id)
-
-        return render(request, template, locals())
 
 
 game_views = Views()

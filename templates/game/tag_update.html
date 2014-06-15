@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load custom_filter %}
+
+{% block sub_title %}
+    {% trans "Tag Edit" %}
+{% endblock %}
+
+
+{% block extra_css %}
+    <link rel="stylesheet" href="/static/schema/default/css/game/game_update.css">
+{% endblock %}
+
+{% block extra_script %}
+    <script src="/static/js/game/game_update.js"></script>
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="row ">
+        {% if tag_list %}
+            <div class="col-md-offset-9 col-md-3">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+                        修改标签 <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                {% for item in  tag_list %}
+                        <li><a href="{% url 'game_tag_prepar_update' item.id %}" >{{ item.name_ch }}</a></li>
+                {% endfor %}
+                    </ul>
+                </div>
+                <a href="{% url 'game_list' %}" class="btn btn-link">返回列表</a>
+            </div>
+
+        {% else %}
+            <div class="col-md-offset-10 col-md-2">
+                <a href="{% url 'game_list' %}" class="btn btn-link">返回列表</a>
+            </div>
+        {% endif %}
+        </div>
+        <form class="form-horizontal game-form" action="{% url 'game_tag_update' %}" id="game_form" method="POST">
+            {% csrf_token %}
+            <fieldset>
+                <div id="legend" class="">
+                    <legend class="">
+                        {% if obj %}
+                            {{ obj.name_ch }}
+                            <input type="hidden" name="id" value="{{ obj.id }}">
+                        {% else %}
+                            添加标签
+                        {% endif %}
+                    </legend>
+                </div>
+                <div class="form-group">
+                    <!-- Text input-->
+                    <label class="col-sm-3 control-label" for="name_ch">中文名：</label>
+
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="name_ch" value="{{ obj.name_ch }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <!-- Text input-->
+                    <label class="col-sm-3 control-label" for="name">英文名：</label>
+
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" name="name" value="{{ obj.name }}">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <!-- Textarea -->
+                    <label class="col-sm-3 control-label" for="desc_ch">描述说明：</label>
+
+                    <div class="col-sm-3">
+                        <div class="textarea">
+                            <textarea type="" class="form-control" name="desc_ch">{{ obj.desc_ch }}</textarea>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <!-- Textarea -->
+                    <label class="col-sm-3 control-label" for="desc">英文说明：</label>
+
+                    <div class="col-sm-3">
+                        <div class="textarea">
+                            <textarea type="" class="form-control" name="desc">{{ obj.desc }}</textarea>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <hr>
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="button" class="btn btn-success btn-lg" id="subBtn">确 定</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

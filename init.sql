@@ -1,3 +1,5 @@
+BEGIN;
+
 DROP DATABASE  IF EXISTS `ysgk`;
 CREATE DATABASE `ysgk`;
 USE `ysgk`;
@@ -16,16 +18,23 @@ CREATE TABLE `game_file` (
 ;
 CREATE TABLE `game_tag` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `create_time` datetime NOT NULL,
+    `update_time` datetime NOT NULL,
     `name` varchar(1024) NOT NULL,
-    `name_ch` varchar(1024) NOT NULL
+    `name_ch` varchar(1024) NOT NULL,
+    `desc` longtext,
+    `desc_ch` longtext
 )
 ;
 CREATE TABLE `game_category` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `create_time` datetime NOT NULL,
+    `update_time` datetime NOT NULL,
     `name` varchar(1024) NOT NULL,
     `name_ch` varchar(1024) NOT NULL,
-    `icon_id` integer NOT NULL
+    `desc` longtext,
+    `desc_ch` longtext,
+    `icon_id` integer
 )
 ;
 ALTER TABLE `game_category` ADD CONSTRAINT `icon_id_refs_id_9d46e9d7` FOREIGN KEY (`icon_id`) REFERENCES `game_file` (`id`);
@@ -90,20 +99,23 @@ CREATE INDEX `game_game_364de4fe` ON `game_game` (`apk_pack_id`);
 CREATE INDEX `game_categorys_65e12249` ON `game_categorys` (`game_id`);
 CREATE INDEX `game_categorys_6f33f001` ON `game_categorys` (`category_id`);
 
-INSERT INTO game_tag (name, name_ch) VALUES ('Management', '经营');
-INSERT INTO game_tag (name, name_ch) VALUES ('Strategy', '策略');
-INSERT INTO game_tag (name, name_ch) VALUES ('Puzzle', '益智');
-INSERT INTO game_tag (name, name_ch) VALUES ('Casual', '休闲');
-INSERT INTO game_tag (name, name_ch) VALUES ('Action', '动作');
-INSERT INTO game_tag (name, name_ch) VALUES ('Adventures', '冒险');
-INSERT INTO game_tag (name, name_ch) VALUES ('Sports', '体育');
-INSERT INTO game_tag (name, name_ch) VALUES ('Arcade', '街机');
-INSERT INTO game_tag (name, name_ch) VALUES ('Physics', '物理');
-INSERT INTO game_tag (name, name_ch) VALUES ('Shooter', '射击');
-INSERT INTO game_tag (name, name_ch) VALUES ('Defense', '塔防');
-INSERT INTO game_tag (name, name_ch) VALUES ('Racing', '竞速');
-INSERT INTO game_tag (name, name_ch) VALUES ('Cards', '棋牌');
-INSERT INTO game_tag (name, name_ch) VALUES ('Role-play', '角色扮演');
-INSERT INTO game_tag (name, name_ch) VALUES ('Kids', '小孩');
-INSERT INTO game_tag (name, name_ch) VALUES ('Zuma', '祖玛');
 
+
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Management', '经营');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Strategy', '策略');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Puzzle', '益智');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Casual', '休闲');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Action', '动作');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Adventures', '冒险');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Sports', '体育');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Arcade', '街机');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Physics', '物理');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Shooter', '射击');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Defense', '塔防');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Racing', '竞速');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Cards', '棋牌');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Role-play', '角色扮演');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Kids', '小孩');
+INSERT INTO game_tag (create_time, update_time, name, name_ch) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Zuma', '祖玛');
+
+COMMIT;

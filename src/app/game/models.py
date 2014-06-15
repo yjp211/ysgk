@@ -27,8 +27,12 @@ class Tag(BaseModel):
     """
     游戏的标签类型
     """
+    create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
+    update_time = models.DateTimeField(auto_now=True)            # 最后更新时间
     name = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)        # 标签名称
     name_ch = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)     # 标签的中文名称
+    desc = models.TextField(null=True, blank=True)                       # 描述（英文）
+    desc_ch = models.TextField(null=True, blank=True)                    # 描述（中文）
 
     class Meta:
         db_table = 'game_tag'
@@ -40,9 +44,12 @@ class Category(BaseModel):
     """
 
     create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
+    update_time = models.DateTimeField(auto_now=True)            # 最后更新时间
     name = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)        # 英文名称
     name_ch = models.CharField(max_length=FIELD_NAME_MAX_LENGTH)     # 中文名称
-    icon = models.ForeignKey(File, related_name='category_icon_map')        # 系列图标
+    desc = models.TextField(null=True, blank=True)                       # 描述（英文）
+    desc_ch = models.TextField(null=True, blank=True)                    # 描述（中文）
+    icon = models.ForeignKey(File, related_name='category_icon_map', null=True, blank=True, on_delete=models.SET_NULL)        # 系列图标
 
     class Meta:
         db_table = 'game_category'
@@ -95,7 +102,7 @@ class GameCategory(BaseModel):
 
     game = models.ForeignKey(Game)     # 对应的游戏
     category = models.ForeignKey(Category) # 对应的系列
-    rank = models.IntegerField(default=50)   # 游戏排行 权值 [1..100]
+    rank = models.IntegerField(default=1)   # 游戏排行 权值 [1..100]
 
     class Meta:
         db_table = 'game_categorys'
