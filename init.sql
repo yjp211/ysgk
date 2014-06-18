@@ -3,6 +3,7 @@ BEGIN;
 DROP DATABASE  IF EXISTS `ysgk`;
 CREATE DATABASE `ysgk`;
 USE `ysgk`;
+
 CREATE TABLE `game_file` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
     `create_time` datetime NOT NULL,
@@ -80,14 +81,16 @@ ALTER TABLE `game_game_tags` ADD CONSTRAINT `game_id_refs_id_47cf5d07` FOREIGN K
 ALTER TABLE `game_game_screens` ADD CONSTRAINT `game_id_refs_id_95d60a02` FOREIGN KEY (`game_id`) REFERENCES `game_game` (`id`);
 CREATE TABLE `game_categorys` (
     `id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `create_time` datetime NOT NULL,
+    `stick_time` datetime,
     `game_id` integer NOT NULL,
     `category_id` integer NOT NULL,
     `rank` integer NOT NULL,
     UNIQUE (`game_id`, `category_id`)
 )
 ;
-ALTER TABLE `game_categorys` ADD CONSTRAINT `category_id_refs_id_bd993c42` FOREIGN KEY (`category_id`) REFERENCES `game_category` (`id`);
 ALTER TABLE `game_categorys` ADD CONSTRAINT `game_id_refs_id_3689d066` FOREIGN KEY (`game_id`) REFERENCES `game_game` (`id`);
+ALTER TABLE `game_categorys` ADD CONSTRAINT `category_id_refs_id_bd993c42` FOREIGN KEY (`category_id`) REFERENCES `game_category` (`id`);
 CREATE INDEX `game_category_465cb59b` ON `game_category` (`icon_id`);
 CREATE INDEX `game_game_465cb59b` ON `game_game` (`icon_id`);
 CREATE INDEX `game_game_0229d4d2` ON `game_game` (`rec_screen_id`);
@@ -97,7 +100,6 @@ CREATE INDEX `game_game_660e1303` ON `game_game` (`apk_id`);
 CREATE INDEX `game_game_364de4fe` ON `game_game` (`apk_pack_id`);
 CREATE INDEX `game_categorys_65e12249` ON `game_categorys` (`game_id`);
 CREATE INDEX `game_categorys_6f33f001` ON `game_categorys` (`category_id`);
-
 
 
 INSERT INTO game_tag (`create_time`, `update_time`, `name`, `name_ch`, `desc`, `desc_ch`) VALUES ('2014/06/15 12:00:00', '2014/06/15 12:00:00', 'Management', '经营', '', '');

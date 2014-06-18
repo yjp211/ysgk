@@ -59,8 +59,8 @@
                                         <li role="presentation" class="divider"></li>
                                         <li>
                                             <label class="radio-inline">
-                                                <input type="radio" name="sort_field" value="gamecategory__rank"
-                                                        {% if query_option.sort_field == 'gamecategory__rank' %}
+                                                <input type="radio" name="sort_field" value="gamecategory__stick_time"
+                                                        {% if query_option.sort_field == 'gamecategory__stick_time' %}
                                                             checked="cheched"
                                                         {% endif %}
                                                         >
@@ -212,8 +212,15 @@
                             <div class="game-categorys">
                                 <div class="text-info">系列：</div>
                                 {% for map in game.gamecategory_set.all %}
-                                    <span class="game-category"
-                                          title="在系列{{ map.category.name_ch }}中该游戏的的排行权值为{{ map.rank }}">{{ map.category.name_ch }}</span>
+                                    <span class="game-category" >
+                                        {{ map.category.name_ch }}
+                                        <button type="button" class="btn btn-xs btn-link dropdown-toggle"
+                                                data-toggle="dropdown" title="在系列 [{{ map.category.name_ch }}] 中置顶"
+                                                onclick="stick('{{ map.category.name_ch }}', this)"
+                                                url="{% url 'game_stick' map.id %}">
+                                            <span class="glyphicon glyphicon-pushpin"></span>
+                                        </button>
+                                    </span>
                                 {% empty %}
                                 {% endfor %}
                             </div>

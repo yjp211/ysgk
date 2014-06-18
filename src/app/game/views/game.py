@@ -84,5 +84,14 @@ class Views(BaseView):
         return HttpResponse(ret.to_json())
 
 
+    def game_stick(self, request, id):
+        """
+        置顶游戏
+        """
+        ret =  game_service.stick_game(id)
+        return HttpResponse(ret.to_json())
+
+
+
 
 game_views = Views()

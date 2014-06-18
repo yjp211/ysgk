@@ -47,6 +47,14 @@ class Views(BaseView):
         ret =  tag_service.update_tag(tag)
         return HttpResponse(ret.to_json())
 
+    def delete(self, request, id):
+        """
+        删除标签
+        """
+        ret =  tag_service.delete_tag(id)
+        return HttpResponse(ret.to_json())
+
+
 
 
 tag_views = Views()

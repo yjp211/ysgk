@@ -99,7 +99,8 @@ class GameCategory(BaseModel):
     """
     游戏系列映射
     """
-
+    create_time = models.DateTimeField(auto_now_add=True)            # 创建时间
+    stick_time = models.DateTimeField(null=True, blank=True)       # 置顶时间
     game = models.ForeignKey(Game)     # 对应的游戏
     category = models.ForeignKey(Category) # 对应的系列
     rank = models.IntegerField(default=1)   # 游戏排行 权值 [1..100]

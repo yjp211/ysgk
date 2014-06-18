@@ -38,3 +38,29 @@ function  deleteGame(obj){
     });
 
 }
+
+function  stick(name, obj){
+
+    if(!confirm("确认将该游戏在 [" +  name + "] 中置顶？")){
+        return false
+    }
+    var url = $(obj).attr('url');
+    $.ajax({
+        url: url,
+        type: 'POST',
+        dataType: 'JSON',
+        success: function(ret){
+            if(ret.success){
+                messagebox("置顶成功");
+                $("#query-form").submit()
+            }else{
+                messagebox("置顶失败，" + ret.msg);
+            }
+        },
+        error: function(){
+            messagebox("置顶失败，网络出现错误");
+        }
+    });
+
+}
+

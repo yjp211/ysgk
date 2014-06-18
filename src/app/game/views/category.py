@@ -50,6 +50,11 @@ class Views(BaseView):
         ret =  category_service.update_category(category)
         return HttpResponse(ret.to_json())
 
-
+    def delete(self, request, id):
+        """
+        删除系列
+        """
+        ret =  category_service.delete_category(id)
+        return HttpResponse(ret.to_json())
 
 category_views = Views()

@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import os
 
-DEBUG = False
+DEBUG = True
 DEBUG_LEVEL = 'DEBUG'
 TEMPLATE_DEBUG = DEBUG
 
@@ -13,19 +13,18 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 ALLOWED_HOSTS = ['*']
 
+
 if DEBUG:
     OPEN_API_URL_PREFIX = 'http://127.0.0.1/api'
-else:
-    OPEN_API_URL_PREFIX = 'http://106.187.99.190/api'
 
-UPYUN = {
+    UPYUN = {
         'BUCKETNAME': 'ykwsys',
         'USERNAME': 'ykwsys',
         'PASSWORD': 'ykw11233',
-        'TIMEOUT': 30,
+        'TIMEOUT': 0,
     }
 
-if DEBUG:
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -37,6 +36,16 @@ if DEBUG:
         }
     }
 else:
+
+    OPEN_API_URL_PREFIX = 'http://106.187.99.190/api'
+
+    UPYUN = {
+        'BUCKETNAME': 'ykw001',
+        'USERNAME': 'ykwsys',
+        'PASSWORD': 'ykw11233',
+        'TIMEOUT': 0,
+    }
+
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',

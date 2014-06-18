@@ -59,12 +59,11 @@ class Service(BaseService):
             log_debug.error(u"更新游戏<%s>，数据库操作失败，%s" % (game.name_ch, e))
             ret.success = False
             ret.msg = u"数据库操作失败"
-            raise e
         return ret
 
     def delete_game(self, id):
         """
-       编辑游戏
+       删除游戏
         """
         ret = Result()
         try:
@@ -88,7 +87,6 @@ class Service(BaseService):
             log_debug.error(u"删除游戏<id:%s>，数据库操作失败，%s" % (id, e))
             ret.success = False
             ret.msg = u"数据库操作失败"
-            raise e
         return ret
 
     def query_game(self, query_option):
@@ -98,6 +96,7 @@ class Service(BaseService):
         :return:
         """
         ret = Result()
+        sort_field = '-update_time'
         game_list = Game.objects.all()
         if query_option:
             key_word = query_option.get('key_word')
@@ -123,9 +122,24 @@ class Service(BaseService):
                 sort_type = query_option.get('sort_type', 'asce')
                 if sort_type == 'desc':
                     sort_field = '-%s' % sort_field
-                game_list = game_list.order_by(sort_field)
-                #gamecategory__rank
+        game_list = game_list.order_by(sort_field)
         ret.data['game_list'] = game_list
+        return ret
+
+    def stick_game(self, gamecatgory_id):
+        """
+       置顶游戏
+        """
+        import  datetime
+        ret = Result()
+        try:
+            gamecatgory = GameCategory.objects.get(id=gamecatgory_id)
+            gamecatgory.stick_time=datetime.datetime.today()
+            gamecatgory.save(update_fields=['stick_time'])
+        except Exception, e:
+            log_debug.error(u"置顶游戏<%s>，数据库操作失败，%s" % (gamecatgory_id, e))
+            ret.success = False
+            ret.msg = u"数据库操作失败"
         return ret
 
 

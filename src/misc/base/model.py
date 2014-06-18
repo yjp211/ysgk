@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 
+import datetime
 from django.db import models
 
 
@@ -28,7 +29,6 @@ class BaseModel(models.Model):
     objects = CustomManager()
 
     def save_most(self):
-        print self._meta.fields
         field_names = []
         for field in self._meta.fields:
             if not field.primary_key:
@@ -36,7 +36,11 @@ class BaseModel(models.Model):
                     val = getattr(self, field.name)
                     if val is not None and  val is not field.default:
                         field_names.append(field.name)
-        print field_names
+        print self._meta.get_all_field_names()
+        if 'update_time' in self._meta.get_all_field_names():
+
+            field_names.append('update_time')
+            self.update_time = datetime.datetime.today()
         return self.save(update_fields=field_names)
 
     class Meta:

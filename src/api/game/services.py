@@ -65,7 +65,10 @@ class Service(BaseService):
                 'games': game_arr,
             }
 
-            for item in Category.objects.get(id=id).game_set.all()[(page_num-1)*page_size : page_num*page_size]:
+            for item in Category.objects.get(id=id).game_set.all()\
+                                .order_by('-gamecategory__stick_time', '-gamecategory__create_time') \
+                                [(page_num-1)*page_size : page_num*page_size]:
+
                 item_dict = {
                     'id': item.id,
                     'name': item.name,
