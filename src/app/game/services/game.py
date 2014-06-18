@@ -117,11 +117,13 @@ class Service(BaseService):
                     if id.strip():
                         game_list = game_list.filter(categorys=id.strip())
 
-            sort_field = query_option.get('sort_field')
-            if sort_field:
+            query_sort_field = query_option.get('sort_field')
+            if query_sort_field:
                 sort_type = query_option.get('sort_type', 'asce')
                 if sort_type == 'desc':
-                    sort_field = '-%s' % sort_field
+                    sort_field = '-%s' % query_sort_field
+                else:
+                    sort_field = query_sort_field
         game_list = game_list.order_by(sort_field)
         ret.data['game_list'] = game_list
         return ret
