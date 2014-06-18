@@ -96,7 +96,7 @@ class Service(BaseService):
         :return:
         """
         ret = Result()
-        sort_field = '-update_time'
+        def_sort_field = '-update_time'
         game_list = Game.objects.all()
         if query_option:
             key_word = query_option.get('key_word')
@@ -124,7 +124,14 @@ class Service(BaseService):
                     sort_field = '-%s' % query_sort_field
                 else:
                     sort_field = query_sort_field
-        game_list = game_list.order_by(sort_field)
+                if query_sort_field == 'update_time':
+                    game_list = game_list.order_by(sort_field)
+                else:
+                    game_list = game_list.order_by(sort_field, def_sort_field)
+            else:
+                game_list = game_list.order_by(def_sort_field)
+        else:
+            game_list = game_list.order_by(def_sort_field)
         ret.data['game_list'] = game_list
         return ret
 
