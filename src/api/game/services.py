@@ -66,7 +66,7 @@ class Service(BaseService):
             }
 
             for item in Category.objects.get(id=id).game_set.all()\
-                                .order_by('-gamecategory__stick_time', '-gamecategory__create_time') \
+                                .order_by('-gamecategory__stick_time', '-update_time') \
                                 [(page_num-1)*page_size : page_num*page_size]:
 
                 item_dict = {
@@ -83,7 +83,7 @@ class Service(BaseService):
                     'downloadURL': item.apk_pack and item.apk_pack.url or '',
                 }
                 game_arr.append(item_dict)
-                ret.data['json_data'] = json.dumps(json_obj)
+            ret.data['json_data'] = json.dumps(json_obj)
         except Exception, e:
             log_debug.error(u"获取游戏系列<id:%s>，数据库操作失败，%s" % (id, e))
             ret.success = False
